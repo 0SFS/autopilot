@@ -6,12 +6,12 @@
  */
 
 import {
-  flightParameterDefaults,
-  type FlightParameterId,
-  type FlightParameters,
-  type FlightParameterStore,
-  type FlightParameterValues,
-} from "../settings/flightParameters";
+  autopilotParameterDefaults,
+  type AutopilotParameterId,
+  type AutopilotParameters,
+  type AutopilotParameterStore,
+  type AutopilotParameterValues,
+} from "./settings";
 
 export type AutopilotBackend = "ours" | "ardupilot";
 export type AutopilotThrottleMode = "airspeed" | "hold";
@@ -49,14 +49,14 @@ export const AUTOPILOT_AXIS_COPY: Record<AutopilotAxisId, { label: string; hint:
 const axisParameterId = (axis: AutopilotAxisId) => `osfs.autopilot.axes.${axis}` as const;
 
 /** Every osfs.autopilot.* parameter the Autopilot tab's own controls edit. */
-export const AUTOPILOT_PARAMETER_IDS: readonly FlightParameterId[] = [
+export const AUTOPILOT_PARAMETER_IDS: readonly AutopilotParameterId[] = [
   "osfs.autopilot.backend",
   ...AUTOPILOT_AXIS_IDS.map(axisParameterId),
   "osfs.autopilot.throttleMode",
 ];
 
 /** The package as its parameters set it. */
-export function readAutopilotSettings(parameters: FlightParameters): AutopilotSettingsV1 {
+export function readAutopilotSettings(parameters: AutopilotParameters): AutopilotSettingsV1 {
   const axes = {} as AutopilotAxes;
   for (const id of AUTOPILOT_AXIS_IDS) axes[id] = parameters.get(axisParameterId(id));
   return {
@@ -68,16 +68,16 @@ export function readAutopilotSettings(parameters: FlightParameters): AutopilotSe
 }
 
 /** Settings as parameter values, to write with `setMany`. */
-export function autopilotParameterValues(settings: AutopilotSettingsV1): Partial<FlightParameterValues> {
-  const values: Partial<Record<FlightParameterId, unknown>> = {
+export function autopilotParameterValues(settings: AutopilotSettingsV1): Partial<AutopilotParameterValues> {
+  const values: Partial<Record<AutopilotParameterId, unknown>> = {
     "osfs.autopilot.backend": settings.backend,
     "osfs.autopilot.throttleMode": settings.throttleMode,
   };
   for (const id of AUTOPILOT_AXIS_IDS) values[axisParameterId(id)] = settings.axes[id];
-  return values as Partial<FlightParameterValues>;
+  return values as Partial<AutopilotParameterValues>;
 }
 
-export const DEFAULT_AUTOPILOT_SETTINGS: Readonly<AutopilotSettingsV1> = Object.freeze(readAutopilotSettings(flightParameterDefaults()));
+export const DEFAULT_AUTOPILOT_SETTINGS: Readonly<AutopilotSettingsV1> = Object.freeze(readAutopilotSettings(autopilotParameterDefaults()));
 export const DEFAULT_AUTOPILOT_AXES: Readonly<AutopilotAxes> = Object.freeze({ ...DEFAULT_AUTOPILOT_SETTINGS.axes });
 
 export type AutopilotSettingsParse =
@@ -160,7 +160,7 @@ export function withAllAutopilotAxes(settings: AutopilotSettingsV1): AutopilotSe
 export const AUTOPILOT_SETTINGS_STORAGE_KEY = "osfs.autopilot.v1";
 
 /** The parameters an old record held, or null when it means nothing here, as from a newer version. */
-export function migrateAutopilotSettings(raw: string): Partial<FlightParameterValues> | null {
+export function migrateAutopilotSettings(raw: string): Partial<AutopilotParameterValues> | null {
   let stored: unknown;
   try { stored = JSON.parse(raw) as unknown; } catch { return null; }
   const parsed = parseAutopilotSettings(stored);
@@ -175,7 +175,7 @@ export interface AutopilotSettingsStore {
 }
 
 /** The package over its parameters: a stable snapshot until one of them changes. */
-export function createAutopilotSettingsStore(parameters: FlightParameterStore): AutopilotSettingsStore {
+export function createAutopilotSettingsStore(parameters: AutopilotParameterStore): AutopilotSettingsStore {
   let settings = readAutopilotSettings(parameters);
   const current = (): AutopilotSettingsV1 => {
     const next = readAutopilotSettings(parameters);

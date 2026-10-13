@@ -17,7 +17,7 @@
  *   connected and ready. A selected-but-disconnected backend refuses engage.
  */
 
-import type { ControlSurfaceState } from "../input/flightInputManager";
+import type { ControlSurfaceState } from "@0sfs/controls/flightInputManager";
 import {
   type AutopilotAxisId,
   type AutopilotSettingsV1,

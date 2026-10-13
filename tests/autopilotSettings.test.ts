@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { flightParameterDefaults } from "../settings/flightParameters";
+import { autopilotParameterDefaults } from "../src/settings";
 import {
   createAutopilotSettingsStore,
   migrateAutopilotSettings,
@@ -8,7 +8,7 @@ import {
   patchAutopilotSettings,
   withAllAutopilotAxes,
   type AutopilotSettingsV1,
-} from "./autopilotSettings";
+} from "../src/autopilotSettings";
 
 const base = (): AutopilotSettingsV1 => ({
   ...DEFAULT_AUTOPILOT_SETTINGS,
@@ -60,7 +60,7 @@ describe("autopilot settings parse", () => {
 
 describe("autopilot settings persist in their parameters", () => {
   it("reads and writes the osfs.autopilot.* parameters", () => {
-    const parameters = flightParameterDefaults();
+    const parameters = autopilotParameterDefaults();
     const store = createAutopilotSettingsStore(parameters);
     expect(store.settings).toEqual(base());
     store.set(patchAutopilotSettings(store.settings, { throttleMode: "hold", axes: { roll: false } }));
@@ -70,7 +70,7 @@ describe("autopilot settings persist in their parameters", () => {
   });
 
   it("keeps one snapshot until a parameter changes elsewhere", () => {
-    const parameters = flightParameterDefaults();
+    const parameters = autopilotParameterDefaults();
     const store = createAutopilotSettingsStore(parameters);
     const first = store.settings;
     expect(store.settings).toBe(first);

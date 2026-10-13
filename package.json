@@ -1,0 +1,52 @@
+{
+  "name": "@0sfs/autopilot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Autopilot for 0SFS: hold controller, modes, engagement, pilot takeover and the Autopilot panel.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    "./ardupilotStatus": {
+      "source": "./src/ardupilotStatus.ts",
+      "default": "./src/ardupilotStatus.ts"
+    },
+    "./AutopilotPanel": {
+      "source": "./src/AutopilotPanel.tsx",
+      "default": "./src/AutopilotPanel.tsx"
+    },
+    "./autopilotSettings": {
+      "source": "./src/autopilotSettings.ts",
+      "default": "./src/autopilotSettings.ts"
+    },
+    "./controlArbiter": {
+      "source": "./src/controlArbiter.ts",
+      "default": "./src/controlArbiter.ts"
+    },
+    "./settings": {
+      "source": "./src/settings.ts",
+      "default": "./src/settings.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "@0sfs/controls": "0.1.0",
+    "@0sfs/engines": "0.1.0",
+    "foss-earth": "0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@0sfs/controls": {
+      "optional": true
+    },
+    "@0sfs/engines": {
+      "optional": true
+    },
+    "foss-earth": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "vitest": "4.1.6"
+  }
+}

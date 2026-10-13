@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { flightParameterDefaults } from "../settings/flightParameters";
-import { createOurAutopilotState, stepOurAutopilot, type OurAutopilotInput } from "./ourAutopilot";
+import { autopilotParameterDefaults } from "../src/settings";
+import { createOurAutopilotState, stepOurAutopilot, type OurAutopilotInput } from "../src/ourAutopilot";
 
-const STICK_DEADBAND = flightParameterDefaults().get("osfs.autopilot.stickOverride");
+const STICK_DEADBAND = autopilotParameterDefaults().get("osfs.autopilot.stickOverride");
 
 const AIRBORNE: OurAutopilotInput = {
   dt: 1 / 120,

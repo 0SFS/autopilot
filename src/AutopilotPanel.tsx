@@ -8,12 +8,12 @@ import {
   type AutopilotSettingsV1,
   type AutopilotThrottleMode,
   withAllAutopilotAxes,
-} from "../autopilot/autopilotSettings";
+} from "./autopilotSettings";
 import {
   describeArduPilotLink,
   type ArduPilotStatus,
-} from "../autopilot/ardupilotStatus";
-import type { AutopilotOwners, AxisOwner } from "../autopilot/controlArbiter";
+} from "./ardupilotStatus";
+import type { AutopilotOwners, AxisOwner } from "./controlArbiter";
 
 export interface AutopilotPanelState {
   settings: AutopilotSettingsV1;

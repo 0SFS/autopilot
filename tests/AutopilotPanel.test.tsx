@@ -2,10 +2,10 @@
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { AutopilotPanel, type AutopilotPanelState } from "./AutopilotPanel";
-import { DEFAULT_AUTOPILOT_SETTINGS } from "../autopilot/autopilotSettings";
-import { DISCONNECTED_ARDUPILOT_STATUS } from "../autopilot/ardupilotStatus";
-import type { AutopilotOwners } from "../autopilot/controlArbiter";
+import { AutopilotPanel, type AutopilotPanelState } from "../src/AutopilotPanel";
+import { DEFAULT_AUTOPILOT_SETTINGS } from "../src/autopilotSettings";
+import { DISCONNECTED_ARDUPILOT_STATUS } from "../src/ardupilotStatus";
+import type { AutopilotOwners } from "../src/controlArbiter";
 
 const roots: Root[] = [];
 beforeEach(() => { vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true); });

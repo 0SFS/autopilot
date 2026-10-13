@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
-import type { ControlSurfaceState } from "../input/flightInputManager";
-import { flightParameterDefaults } from "../settings/flightParameters";
+import type { ControlSurfaceState } from "@0sfs/controls/flightInputManager";
+import { autopilotParameterDefaults } from "../src/settings";
 import {
   createControlArbiterState,
   setArbiterEngaged,
   stepControlArbiter,
   type ControlArbiterFlight,
   type ControlArbiterInput,
-} from "./controlArbiter";
-import { DEFAULT_AUTOPILOT_SETTINGS, patchAutopilotSettings } from "./autopilotSettings";
-import { DISCONNECTED_ARDUPILOT_STATUS, type ArduPilotStatus } from "./ardupilotStatus";
+} from "../src/controlArbiter";
+import { DEFAULT_AUTOPILOT_SETTINGS, patchAutopilotSettings } from "../src/autopilotSettings";
+import { DISCONNECTED_ARDUPILOT_STATUS, type ArduPilotStatus } from "../src/ardupilotStatus";
 
-const STICK_DEADBAND = flightParameterDefaults().get("osfs.autopilot.stickOverride");
+const STICK_DEADBAND = autopilotParameterDefaults().get("osfs.autopilot.stickOverride");
 
 const PILOT: ControlSurfaceState = {
   elevator: 0, aileron: 0, rudder: 0, throttle: 0.55,
