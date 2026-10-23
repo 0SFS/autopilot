@@ -1,3 +1,4 @@
+import { Resettable } from "foss-earth/shell";
 import {
   AUTOPILOT_AXIS_COPY,
   AUTOPILOT_AXIS_IDS,
@@ -64,19 +65,21 @@ export function AutopilotPanel({ state, onSettingsChange, onEngageChange }: Auto
     <div className="flight-panel__content">
       <fieldset className="flight-panel__fieldset">
         <legend>Backend</legend>
-        <div className="flight-panel__segmented" role="group" aria-label="Autopilot backend">
-          {BACKENDS.map((backend) => (
-            <button
-              key={backend.id}
-              type="button"
-              className={settings.backend === backend.id ? "is-active" : ""}
-              aria-pressed={settings.backend === backend.id}
-              onClick={() => patch({ backend: backend.id })}
-            >
-              {backend.label}
-            </button>
-          ))}
-        </div>
+        <Resettable parameter="osfs.autopilot.backend" name="Autopilot backend">
+          <div className="flight-panel__segmented" role="group" aria-label="Autopilot backend">
+            {BACKENDS.map((backend) => (
+              <button
+                key={backend.id}
+                type="button"
+                className={settings.backend === backend.id ? "is-active" : ""}
+                aria-pressed={settings.backend === backend.id}
+                onClick={() => patch({ backend: backend.id })}
+              >
+                {backend.label}
+              </button>
+            ))}
+          </div>
+        </Resettable>
         <p className="flight-panel__hint">
           Our AP runs in the browser and only flies the axes enabled below. ArduPilot, when connected, owns those automated axes while JSBSim stays the flight dynamics model.
         </p>
@@ -110,12 +113,14 @@ export function AutopilotPanel({ state, onSettingsChange, onEngageChange }: Auto
           const copy = AUTOPILOT_AXIS_COPY[id];
           return (
             <label key={id} className="flight-panel__field flight-panel__field--inline">
-              <input
-                type="checkbox"
-                aria-label={`Automate ${copy.label}`}
-                checked={settings.axes[id]}
-                onChange={(event) => setAxis(id, event.target.checked)}
-              />
+              <Resettable parameter={`osfs.autopilot.axes.${id}`} name={`Automate ${copy.label}`}>
+                <input
+                  type="checkbox"
+                  aria-label={`Automate ${copy.label}`}
+                  checked={settings.axes[id]}
+                  onChange={(event) => setAxis(id, event.target.checked)}
+                />
+              </Resettable>
               <span>{copy.label}</span>
             </label>
           );
@@ -134,15 +139,17 @@ export function AutopilotPanel({ state, onSettingsChange, onEngageChange }: Auto
         <legend>Throttle</legend>
         <label className="flight-panel__field">
           <span>Behaviour</span>
-          <select
-            aria-label="Throttle behaviour"
-            value={settings.throttleMode}
-            disabled={!settings.axes.throttle}
-            onChange={(event) => patch({ throttleMode: event.target.value as AutopilotThrottleMode })}
-          >
-            <option value="airspeed">Hold airspeed (capture on engage)</option>
-            <option value="hold">Hold current lever</option>
-          </select>
+          <Resettable parameter="osfs.autopilot.throttleMode" name="Throttle behaviour">
+            <select
+              aria-label="Throttle behaviour"
+              value={settings.throttleMode}
+              disabled={!settings.axes.throttle}
+              onChange={(event) => patch({ throttleMode: event.target.value as AutopilotThrottleMode })}
+            >
+              <option value="airspeed">Hold airspeed (capture on engage)</option>
+              <option value="hold">Hold current lever</option>
+            </select>
+          </Resettable>
         </label>
         <p className="flight-panel__hint">
           Moving the throttle lever takes that axis back. Attitude axes yield while that stick is deflected or on the ground. HUD TRIM assists still only drive the wheels when AP does not own that axis; they cancel leftover moment continuously rather than holding attitude.
